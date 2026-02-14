@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EEG Fatigue Prediction</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .container { max-width: 900px; margin: auto; }
+        textarea { width: 100%; height: 80px; }
+        input[type="submit"] { padding: 10px 20px; margin-top: 10px; }
+        .result { margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #f9f9f9; }
+        table { border-collapse: collapse; width: 100%; margin-top:20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>EEG Fatigue Prediction</h1>
+
+    <!-- Single Sample Prediction -->
+    <h3>Single Sample Prediction</h3>
+    <form method="POST">
+        <label>Enter EEG features (comma-separated):</label><br>
+        <textarea name="features" placeholder="0.39, 0.35, ..."></textarea><br>
+        <input type="submit" value="Predict Single Sample">
+    </form>
+
+    <hr>
+
+    <!-- File Upload Prediction -->
+    <h3>Batch Prediction (Upload CSV)</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required>
+        <br>
+        <input type="submit" value="Upload & Predict">
+    </form>
+
+    {% if error %}
+    <div class="result" style="color:red;">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="result">
+        <strong>Predicted Label:</strong> {{ result }} <br>
+        <strong>Probability of Fatigue:</strong> {{ prob | round(3) }}
+    </div>
+    {% endif %}
+
+    {% if table %}
+    <h3>Prediction Results for Uploaded File</h3>
+    <div class="result">
+        {{ table | safe }}
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>
